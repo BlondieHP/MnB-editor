@@ -2,6 +2,20 @@ Attribute VB_Name = "Utils"
 
 Option Explicit
 
+'============================================================================
+' Generic Swap - replaces 20 individual Swap* functions for simple types.
+' Type-specific Swap functions (SwapTroops, SwapItems, etc.) remain for
+' clarity and because they fire change events in DataRepository.cls.
+'
+' Usage: SwapAny a, b   ' swaps two Variant-compatible values
+'============================================================================
+Public Sub SwapAny(ByRef a As Variant, ByRef b As Variant)
+    Dim tmp As Variant
+    tmp = a
+    a = b
+    b = tmp
+End Sub
+
 Function showHexId(ID As String) As String
     On Error GoTo errorHandle
     showHexId = CStr(Hex(Val(ID)))
