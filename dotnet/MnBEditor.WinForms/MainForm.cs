@@ -14,6 +14,7 @@ public class MainForm : Form
     private ToolStripStatusLabel _statusLabel = null!;
     private ItemListEditor? _itemEditor;
     private TroopListEditor? _troopEditor;
+    private FactionListEditor? _factionEditor;
 
     public MainForm()
     {
@@ -128,6 +129,7 @@ public class MainForm : Form
         {
             "Items" => _itemEditor = new ItemListEditor(_repo),
             "Troops" => _troopEditor = new TroopListEditor(_repo),
+            "Factions" => _factionEditor = new FactionListEditor(_repo),
             _ => new Label { Text = $"Editor for {tag} not yet implemented", Dock = DockStyle.Fill, TextAlign = ContentAlignment.MiddleCenter }
         };
 
@@ -140,7 +142,21 @@ public class MainForm : Form
 
     // ====== Actions ======
 
-    private void OnSaveAll(object? sender, EventArgs e) { MessageBox.Show("Save not yet implemented in .NET", "Info", MessageBoxButtons.OK, MessageBoxIcon.Information); }
+    private void OnSaveAll(object? sender, EventArgs e)
+    {
+        if (_repo.Items.Count == 0) { MessageBox.Show("No MOD loaded."); return; }
+        try
+        {
+            FileSaver.SaveItems(_repo);
+            FileSaver.SaveTroops(_repo);
+            FileSaver.SaveFactions(_repo);
+            _statusLabel.Text = $"Saved: {_repo.Items.Count} items, {_repo.Troops.Count} troops, {_repo.Factions.Count} factions";
+            _repo.NotifyDataSaved();
+            MessageBox.Show("MOD saved successfully.", "Save", MessageBoxButtons.OK, MessageBoxIcon.Information);
+        }
+        catch (Exception ex) { MessageBox.Show($"Save failed: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error); }
+    }
+
     private void OnValidate(object? sender, EventArgs e) { var v = new DataValidator(); MessageBox.Show(v.Validate(_repo) ? "Validation PASSED" : $"{v.Errors.Count} issues found", "Validate"); }
 
     private void ShowStats()
