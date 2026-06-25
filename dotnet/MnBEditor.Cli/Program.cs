@@ -238,7 +238,7 @@ static DataRepository? LoadMod(string modPath)
         int count = (int)parser.GetLong();
         for (int i = 0; i < count; i++)
         {
-            var f = ReadFaction(parser);
+            var f = ReadFaction(parser, count);
             f.Id = i;
             repo.Factions.Add(f);
         }
@@ -276,12 +276,12 @@ static Troop ReadTroop(FileParser p)
     return t;
 }
 
-static Faction ReadFaction(FileParser p)
+static Faction ReadFaction(FileParser p, int totalFactions)
 {
     var f = new Faction { StrId = p.GetWord(), Name = p.GetWord(), Flags = p.GetLong(), Color = p.GetWord() };
-    // Read relationships: first word is count, then N double values
-    var relCount = p.GetLong();
-    for (int i = 0; i < relCount; i++) p.GetDouble();
+    // Relationships: exactly totalFactions double values (no count prefix)
+    for (int i = 0; i < totalFactions; i++)
+        f.Relationships.Add(new Relationship { FactionId = i, Value = p.GetDouble() });
     p.GetLong(); // reserved
     return f;
 }
