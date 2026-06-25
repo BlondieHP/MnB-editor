@@ -1,0 +1,34 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.31903.59
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MnBEditor.Core", "MnBEditor.Core\MnBEditor.Core.csproj", "{CCBADD7B-8BB5-45BD-A258-66421B8E06D7}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MnBEditor.Tests", "MnBEditor.Tests\MnBEditor.Tests.csproj", "{3D233327-19ED-44CC-9CCE-AFC9FEF0B7A4}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MnBEditor.Cli", "MnBEditor.Cli\MnBEditor.Cli.csproj", "{72B2798C-31E9-4371-BEF5-24A16ECF845F}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{CCBADD7B-8BB5-45BD-A258-66421B8E06D7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CCBADD7B-8BB5-45BD-A258-66421B8E06D7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CCBADD7B-8BB5-45BD-A258-66421B8E06D7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CCBADD7B-8BB5-45BD-A258-66421B8E06D7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3D233327-19ED-44CC-9CCE-AFC9FEF0B7A4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3D233327-19ED-44CC-9CCE-AFC9FEF0B7A4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3D233327-19ED-44CC-9CCE-AFC9FEF0B7A4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3D233327-19ED-44CC-9CCE-AFC9FEF0B7A4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{72B2798C-31E9-4371-BEF5-24A16ECF845F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{72B2798C-31E9-4371-BEF5-24A16ECF845F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{72B2798C-31E9-4371-BEF5-24A16ECF845F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{72B2798C-31E9-4371-BEF5-24A16ECF845F}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
