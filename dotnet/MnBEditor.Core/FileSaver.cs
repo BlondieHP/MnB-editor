@@ -50,6 +50,7 @@ public static class FileSaver
         }
     }
 
+    public static string FormatItemPublic(Item it) => FormatItem(it);
     private static string FormatItem(Item it)
     {
         var sb = new StringBuilder();
