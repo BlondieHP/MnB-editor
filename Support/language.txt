@@ -1,0 +1,18 @@
+Option Explicit 
+  Dim lang As String 
+  Private Declare Function GetSystemDefaultLCID Lib "kernel32" () As Long 
+  
+Private Sub Form_Load() 
+  Dim LocaleID As Long 
+  LocaleID = GetSystemDefaultLCID 
+  Select Case LocaleID 
+  Case &H404 
+  MsgBox "当前系统为：中文繁体", , "语言" 
+  Case &H804 
+  MsgBox "当前系统为：中文简体", , "语言" 
+  lang = "1" 
+  Case &H409 
+  MsgBox "当前系统为：英文", , "语言" 
+  lang = "2" 
+  End Select 
+  End Sub 

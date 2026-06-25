@@ -1,0 +1,30 @@
+# VB6 build artifacts
+*.OBJ
+
+# Debug log files
+*.log
+
+# Backup files
+*.bak
+*.BAK
+
+# Duplicate/copy files
+复件*
+
+# Windows thumbnail cache
+Thumbs.db
+
+# Distribution archives (rebuild from source)
+*.rar
+
+# IDE settings (user-specific)
+*.vbw
+*.PDM
+
+# OS files
+desktop.ini
+MSSCCPRJ.SCC
+*.7z
+*.CAB
+Release/
+MnBWarband_Editor(Setup)/

@@ -1,0 +1,49 @@
+Private Sub ResetScroll()
+Dim DH As Long, DW As Long
+DH = Display.ScaleHeight ' / Screen.TwipsPerPixelY
+DW = Display.ScaleWidth ' / Screen.TwipsPerPixelX
+
+If DH > PicMain.ScaleHeight Then
+     With VScroll
+         .Enabled = True
+         .Min = 0
+         .Max = DH - PicMain.ScaleHeight
+         .LargeChange = PicMain.ScaleHeight '((.Max - .Min) / 2)
+         .SmallChange = PicMain.ScaleHeight / 2 '(.Max - .Min) / 6
+         .Value = 0
+     End With
+Else
+VScroll.Enabled = False
+
+End If
+
+If DW > PicMain.ScaleWidth Then
+     With HScroll
+         .Enabled = True
+         .Min = 0
+         .Max = DW - PicMain.ScaleWidth
+         .LargeChange = PicMain.ScaleWidth '((.Max - .Min) / 2)
+         .SmallChange = PicMain.ScaleWidth / 2 '(.Max - .Min) / 6
+         .Value = 0
+     End With
+Else
+HScroll.Enabled = False
+End If
+End Sub
+
+Private Sub VScroll_Change()
+Display.Move 0 - HScroll.Value, 0 - VScroll.Value
+End Sub
+
+Private Sub VScroll_Scroll()
+Display.Move 0 - HScroll.Value, 0 - VScroll.Value
+End Sub
+
+
+Private Sub HScroll_Change()
+Display.Move 0 - HScroll.Value, 0 - VScroll.Value
+End Sub
+
+Private Sub HScroll_Scroll()
+Display.Move 0 - HScroll.Value, 0 - VScroll.Value
+End Sub

@@ -1,0 +1,46 @@
+Public Function ReadOpBlockFromTXT() As Boolean
+'On Error GoTo EL
+
+Dim Values() As String, i As Long, j As Long, iPlus As Long
+Dim TemBlocks() As Type_Op_Block
+
+ReadOpBlockFromTXT = False
+If Trim(Code_TXT) = "" Then
+  ReDim OpBlocks(0)
+  ReadOpBlockFromTXT = True
+  ErrPack.Reason = ERR_NULL_STRING
+  Exit Function
+End If
+
+Values = Split(Trim(Code_TXT), " ")
+
+ReDim TemBlocks(0)
+Do While i <= UBound(Values)
+   ReDim Preserve TemBlocks(UBound(TemBlocks) + 1)
+   iPlus = 0
+   
+   With TemBlocks(UBound(TemBlocks))
+     .Op = Values(i)
+     .ParaNum = Val(Values(i + 1))
+     iPlus = 1
+     
+     ReDim .Para(.ParaNum)
+     For j = 1 To .ParaNum
+       .Para(j).Value = Values(i + j + 1)
+       iPlus = iPlus + 1
+     Next j
+     
+     i = i + iPlus + 1
+   End With
+Loop
+OpBlocks = TemBlocks
+ReadOpBlockFromTXT = True
+
+Exit Function
+
+EL:
+ErrPack.Reason = Err.Number
+ErrPack.Block = UBound(TemBlocks)
+ErrPack.Start = i + iPlus
+ErrPack.Param = j
+End Function

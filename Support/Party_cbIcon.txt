@@ -1,0 +1,32 @@
+
+strTemArray = Array("玩家", "玩家(骑马)", "灰骑士", "维基亚骑士", "背旗者A", "背旗者B", "农民", "库吉特骑兵A", "库吉特骑兵B", "斧手", _
+               "女人A", "女人B", "城镇", "城镇(草原)", "城镇(沙漠)", "村庄A", "村庄B", "村庄C", "燃烧的村庄A", "村庄A(沙漠)", _
+               "燃烧的村庄B", "村庄B(沙漠)", "燃烧的村庄C", "村庄C(沙漠)", "村庄A(雪地)", "燃烧的村庄A(雪地)", "村庄A(雪覆盖的沙漠)", _
+               "扎营", "船", "在陆上的船", "城堡A", "城堡B", "城堡C", "城堡D", "城镇(雪地)", "城堡A(雪地)", "城堡B(雪地)", "驴子", "牛", _
+                "训练场", "桥A", "桥B", "桥A(雪地)", "自定义1", "自定义2", "自定义3")
+ReDim Preserve strTemArray(188)
+
+For i = 46 To 180
+     strTemArray(i) = "旗帜" & (i - 45)
+Next i
+
+For i = 181 To 188
+     Select Case i
+          Case icon_map_flag_kingdom_a
+              strTemArray(i) = "王国旗帜A"
+          Case icon_map_flag_kingdom_b
+              strTemArray(i) = "王国旗帜B"
+          Case icon_map_flag_kingdom_c
+              strTemArray(i) = "王国旗帜C"
+          Case icon_map_flag_kingdom_d
+              strTemArray(i) = "王国旗帜D"
+          Case icon_map_flag_kingdom_e
+              strTemArray(i) = "王国旗帜E"
+          Case icon_map_flag_kingdom_f
+              strTemArray(i) = "王国旗帜F"
+          Case icon_banner_136
+              strTemArray(i) = "旗帜136"
+          Case icon_bandit_lair
+              strTemArray(i) = "强盗巢穴"
+     End Select
+Next i

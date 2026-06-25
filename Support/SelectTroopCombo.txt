@@ -1,0 +1,112 @@
+Private Sub CbSelectTroop_Click()
+
+If CustomActive Then
+
+  If LstTroops.SelectedItem.Index < LstTroops.ListItems.Count Then
+  If CbSelectTroop.ListIndex > -1 Then
+    With CurrentParty.Stacks(LstTroops.SelectedItem.Index)
+         .ID = CbSelectTroop.ListIndex - 1
+    
+         If .ID = -1 Then
+            DeleteCurrentStack LstTroops.SelectedItem.Index
+            LoadTroopsListView
+         Else
+             LstTroops.SelectedItem.Text = .ID
+             LstTroops.SelectedItem.SubItems(1) = Trps(.ID).csvName
+             LstTroops.SelectedItem.SubItems(2) = Trps(.ID).strID
+             
+         End If
+    End With
+   End If
+  Else
+    CreateCurrentStack CbSelectTroop.ListIndex - 1
+    If CbSelectTroop.ListIndex - 1 >= 0 Then
+       LoadTroopsListView
+    End If
+  End If
+  
+End If
+End Sub
+
+Private Sub CbSelectTroop_Scroll()
+Call CbSelectTroop_Click
+End Sub
+
+Private Sub LoadTroopsListView()
+Dim i As Integer, oItem As ListItem
+
+CustomActive = False
+LstTroops.ListItems.Clear
+With CurrentParty
+
+   If .StacksCount > 0 Then
+     For i = 1 To .StacksCount
+           Set oItem = LstTroops.ListItems.Add(, , .Stacks(i).ID)
+                oItem.SubItems(1) = Trps(.Stacks(i).ID).csvName
+                oItem.SubItems(2) = Trps(.Stacks(i).ID).strID
+                oItem.SubItems(3) = .Stacks(i).Min
+                oItem.SubItems(4) = GetYesNoStr(.Stacks(i).Flags)
+     Next i
+     LstTroops.ListItems.Add , , PublicTips(0)
+     
+     SetTroopExist True
+     LstTroops.ListItems(1).Selected = True
+     'LstTroops_ItemClick LstTroops.ListItems(1)
+   Else
+     LstTroops.ListItems.Add , , PublicTips(0)
+     'CbSelectTroop.ListIndex = 0
+     SetTroopExist False
+   End If
+End With
+
+CustomActive = True
+End Sub
+
+'*************************************************************************
+'**函 数 名：LoadSelectTroopCombo
+'**输    入：
+'**输    出：
+'**功能描述：
+'**全局变量：
+'**调用模块：
+'**作    者：SSgt_Edward
+'**日    期：2010-12-06 11:36:35
+'**修 改 人：
+'**日    期：
+'**版    本：V1.1321
+'*************************************************************************
+Private Sub LoadSelectTroopCombo()
+Dim i As Long
+CbSelectTroop.Clear
+CbSelectTroop.AddItem PublicTips(0)
+CbSelectTroop.ItemData(0) = -1
+         For i = 0 To N_Troop - 1
+                  CbSelectTroop.AddItem i & " " & Trps(i).csvName & "|" & Trps(i).strID
+                  CbSelectTroop.ItemData(i + 1) = i
+         Next i
+         
+
+End Sub
+
+Private Sub LstTroops_ItemClick(ByVal Item As MSComctlLib.ListItem)
+With CurrentParty
+ If Item.Index < LstTroops.ListItems.Count Then
+   If .Stacks(Item.Index).ID + 1 > -1 And .Stacks(Item.Index).ID + 1 < CbSelectTroop.ListCount Then
+     CbSelectTroop.ListIndex = .Stacks(Item.Index).ID + 1
+   Else
+       .Stacks(Item.Index).ID = -1
+   End If
+   
+   If .Stacks(Item.Index).ID >= 0 Then
+       TxtMin.Text = .Stacks(Item.Index).Min
+       chkSlave.Value = .Stacks(Item.Index).Flags
+       
+       TxtMin.Enabled = True
+       chkSlave.Enabled = True
+   End If
+ Else
+   CbSelectTroop.ListIndex = 0
+   SetTroopExist False
+ End If
+End With
+End Sub

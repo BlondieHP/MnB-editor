@@ -1,0 +1,10 @@
+If MsgBox(ActiveString(PublicMsgs(2), TabMat(CurrentTabMatID).strID), vbYesNo + vbExclamation, ActiveString(PublicMsgs(3), PublicEditors(GetEditorIndex(Me.Tag)))) = vbYes Then
+
+MsgBox ActiveString(PublicMsgs(4), TabMat(CurrentTabMatID).strID), vbCritical, ActiveString(PublicMsgs(3), PublicEditors(GetEditorIndex(Me.Tag)))
+
+If MsgBox(ActiveString(PublicMsgs(5), TabMat(CurrentTabMatID).strID, PublicEditors(GetEditorIndex(Me.Tag))), vbYesNo + vbInformation, ActiveString(PublicMsgs(9), PublicEditors(GetEditorIndex(Me.Tag)))) = vbYes Then
+
+MsgBox ActiveString(PublicMsgs(7), TabMat(CurrentTabMatID - 1).strID), vbCritical, ActiveString(PublicMsgs(8), PublicEditors(GetEditorIndex(Me.Tag)))
+
+MsgBox ActiveString(PublicMsgs(7), TabMat(CurrentTabMatID).strID), vbCritical, ActiveString(PublicMsgs(8), PublicEditors(GetEditorIndex(Me.Tag)))
+

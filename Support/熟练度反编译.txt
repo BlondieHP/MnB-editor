@@ -1,0 +1,78 @@
+'wp(x)
+q = False
+If .WP.one_handed > 0 Then
+If .WP.one_handed = .WP.two_handed Then
+   If .WP.one_handed = .WP.polearm Then
+       If .WP.one_handed = .WP.archery Then
+           If .WP.one_handed = .WP.crossbow Then
+               If .WP.one_handed = .WP.throwing Then
+                   q = True
+               End If
+           End If
+       End If
+   End If
+End If
+End If
+
+strTem = "wp(" & .WP.one_handed & ") | "
+If q Then GoTo WP
+
+'wpe(m,a,c,t)
+If .WP.one_handed <> .WP.archery And .WP.one_handed <> .WP.crossbow And .WP.one_handed <> .WP.throwing Then
+  If .WP.one_handed = .WP.two_handed Then
+     If .WP.one_handed = .WP.polearm Then
+       q = True
+     End If
+  End If
+End If
+strTem = "wpe(" & .WP.one_handed & "," & .WP.archery & "," & .WP.crossbow & "," & .WP.throwing & ") | "
+If q Then GoTo WP
+
+'wpex(o,w,p,a,c,t) ÔÝ²»ÓÃ
+'strTem = "wpe(" & .WP.one_handed & "," & .WP.archery & "," & .WP.crossbow & "," & .WP.throwing & ") | "
+'If q Then GoTo WP
+
+'wps
+If .WP.one_handed > 0 Then
+   strTem = "wp_one_handed (" & .WP.one_handed & ") | "
+End If
+
+If .WP.two_handed > 0 Then
+   strTem = strTem & "wp_two_handed (" & .WP.two_handed & ") | "
+End If
+
+If .WP.polearm > 0 Then
+   strTem = strTem & "wp_polearm (" & .WP.polearm & ") | "
+End If
+
+If .WP.archery > 0 Then
+   strTem = strTem & "wp_archery (" & .WP.archery & ") | "
+End If
+
+If .WP.crossbow > 0 Then
+   strTem = strTem & "wp_crossbow (" & .WP.crossbow & ") | "
+End If
+
+If .WP.throwing > 0 Then
+   strTem = strTem & "wp_throwing (" & .WP.throwing & ") | "
+End If
+
+WP:
+If .WP.firearm > 0 Then
+   strTem = strTem & "wp_firearm (" & .WP.firearm & ") | "
+End If
+
+If Len(strTem) > 1 Then
+   strTem = Left(strTem, Len(strTem) - 2)
+Else
+   strTem = "0"
+End If
+
+
+strTem(0) = "wp_one_handed"
+strTem(1) = "wp_two_handed"
+strTem(2) = "wp_polearm"
+strTem(3) = "wp_archery"
+strTem(4) = "wp_crossbow"
+strTem(5) = "wp_throwing"
+strTem(6) = "wp_firearm"

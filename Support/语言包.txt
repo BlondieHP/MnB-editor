@@ -1,0 +1,4 @@
+1.Êý:
+2.[ModName]
+3.[Version]
+4.(NOW)

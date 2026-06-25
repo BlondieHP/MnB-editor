@@ -1,0 +1,81 @@
+Private Sub CbSelectProperty_Click()
+On Error GoTo EL
+Dim lstInventory_Index As Integer
+If CustomActive Then
+
+lstInventory_Index = LstProperties.SelectedItem.Index
+
+If CbSelectProperty.ListIndex > 0 Then
+'MsgBox CurrentTrp.id
+CurrentTrp.lstInventory(lstInventory_Index).X = CbSelectProperty.ListIndex
+With LstProperties.SelectedItem
+      .Text = CbSelectProperty.ListIndex
+      .SubItems(1) = itm(CurrentTrp.lstInventory(lstInventory_Index).X).csvName
+      .SubItems(2) = itm(CurrentTrp.lstInventory(lstInventory_Index).X).dbName
+End With
+
+Else
+CurrentTrp.lstInventory(lstInventory_Index).X = -1
+With LstProperties.SelectedItem
+      .Text = "(无)"
+      .SubItems(1) = ""
+      .SubItems(2) = ""
+End With
+End If
+
+End If
+
+
+Exit Sub
+
+EL:
+  Call logErr("frmTroops", "CbSelectProperty_Click", Err.Number, Err.Description)
+End Sub
+
+
+Private Sub CbSelectProperty_Scroll()
+Call CbSelectProperty_Click
+End Sub
+
+Private Sub LstProperties_ItemClick(ByVal Item As MSComctlLib.ListItem)
+Dim Itm_Idx As Long
+
+CustomActive = False
+Itm_Idx = Val(Item.Text)
+
+If Itm_Idx = -1 Then
+     CbSelectProperty.ListIndex = 0
+Else
+     CbSelectProperty.ListIndex = Itm_Idx
+End If
+
+CustomActive = True
+End Sub
+
+
+'*************************************************************************
+'**函 数 名：LoadPropertiesCombo
+'**输    入：
+'**输    出：
+'**功能描述：
+'**全局变量：
+'**调用模块：
+'**作    者：SSgt_Edward
+'**日    期：2010-11-26 17:02:05
+'**修 改 人：
+'**日    期：
+'**版    本：V1.1321
+'*************************************************************************
+Private Sub LoadPropertiesCombo()
+Dim i As Long
+CbSelectProperty.Clear
+         For i = 0 To N_Item - 1
+             If i = 0 Then
+                  CbSelectProperty.AddItem "0 (无)"
+             Else
+                  CbSelectProperty.AddItem i & " " & itm(i).csvName & "|" & itm(i).dbName
+             End If
+         Next i
+         
+
+End Sub

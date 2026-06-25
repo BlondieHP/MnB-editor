@@ -1,0 +1,37 @@
+'*************************************************************************
+'**函 数 名：LoadMap
+'**输    入：无
+'**输    出：无
+'**功能描述：
+'**全局变量：
+'**调用模块：
+'**作    者：SSgt_Edward
+'**日    期：2010-12-09 15:08:00
+'**修 改 人：
+'**日    期：
+'**版    本：V1.1321
+'*************************************************************************
+Private Sub LoadMap()
+Dim tP(3) As tPoint, L As Single, dL As Single, DrawDegree As Single, i As Long
+dL = Pic1.ScaleWidth / 2 * 1 / 20
+
+Pic1.Cls
+For i = 0 To N_Party - 1
+  With Parties(i)
+         tP(0) = SetPoint(.InitPos(1).X, .InitPos(1).Y)
+         tP(1) = GetRelativePoint(CntP, tP(0), ViewPoint, SCL)
+         tP(2) = SetPoint(tP(1).X, tP(1).Y - dL)
+                
+         Pic1.ForeColor = Val("&H" & MnBtoRGBColor(Factions(.Faction).lColor))
+         Pic1.FillColor = Pic1.ForeColor
+         Pic1.FillStyle = 1
+         Pic1.Circle (tP(1).X, tP(1).Y), dL
+         
+         Pic1.CurrentX = tP(2).X
+         Pic1.CurrentY = tP(2).Y
+         Pic1.Print .csvName
+         
+  End With
+Next i
+
+End Sub

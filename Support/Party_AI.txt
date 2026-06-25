@@ -1,0 +1,28 @@
+'*************************************************************************
+'**函 数 名：InitAIList
+'**输    入：无
+'**输    出：无
+'**功能描述：
+'**全局变量：
+'**调用模块：
+'**作    者：SSgt_Edward
+'**日    期：2010-12-06 16:44:25
+'**修 改 人：
+'**日    期：
+'**版    本：V1.1321
+'*************************************************************************
+Private Sub InitAIList()
+Dim i As Integer, strTemArray() As Variant, TemArray() As Variant
+strTemArray = Array("坚守", "旅行到部队", "在某地巡逻", "在某部队处巡逻", "遇到部队攻击", _
+                    "遇到部队躲避", "旅行到某地", "遇到部队讲和", "在城镇", "旅行到船", "护送部队,""被部队驱动")
+               
+TemArray = Array(ai_bhvr_hold, ai_bhvr_travel_to_party, ai_bhvr_patrol_location, ai_bhvr_patrol_party, ai_bhvr_attack_party, _
+                 ai_bhvr_avoid_party, ai_bhvr_travel_to_point, ai_bhvr_negotiate_party, ai_bhvr_in_town, ai_bhvr_travel_to_ship, ai_bhvr_escort_party, ai_bhvr_driven_by_party)
+
+LstAI.Clear
+For i = 0 To UBound(strTemArray)
+      LstAI.AddItem strTemArray(i)
+      LstAI.ItemData = TemArray(i)
+Next n
+
+End Sub

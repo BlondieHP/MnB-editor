@@ -1,0 +1,23 @@
+####################################################################################################################
+#  There are two animation arrays (one for human and one for horse). Each animation in these arrays contains the following fields:
+#  1) Animation id (string): used for referencing animations in other files. The prefix anim_ is automatically added before each animation-id .
+#  2) Animation flags: could be anything beginning with acf_ defined in header_animations.py
+#  3) Animation master flags: could be anything beginning with amf_ defined in header_animations.py
+#  4) Animation sequences (list).
+#  4.1) Duration of the sequence.
+#  4.2) Name of the animation resource.
+#  4.3) Beginning frame of the sequence within the animation resource.
+#  4.4) Ending frame of the sequence within the animation resource.
+#  4.5) Sequence flags: could be anything beginning with arf_ defined in header_animations.py
+# 
+####################################################################################################################
+
+ stand 0 16777216  4
+  3.000000 anim_human 50 52 1342177280 0 0.000000 0.000000 0.000000  0.250000 
+  3.000000 anim_human 60 62 1342177280 0 0.000000 0.000000 0.000000  0.750000 
+  3.000000 anim_human 70 72 1342177280 0 0.000000 0.000000 0.000000  0.250000 
+  3.000000 anim_human 80 82 1358954496 0 0.000000 0.000000 0.000000  0.500000
+
+ 动作ID 标识(acf_) master标识(amf_) 效果数(底下有几行就是几个)
+  动作寿命 动作文件名 在动作文件中的开始帧数 在动作文件中的结束帧数 效果标识(arf_)  
+

@@ -1,0 +1,178 @@
+For i = 0 To 26
+   mEditor(i).Caption = PublicTags(i)
+   
+   If i = 0 Or i = Tag_Register Or i = Tag_Variable Or i = Tag_Local_Variable Or i = Tags_End Then
+     mEditor(i).Visible = False
+   Else
+     q = EnumEntities(i, PublicTags(i) & ":([index])[csvname]", strTem)
+     
+     If q Then
+       Select Case i
+         Case Tag_String
+           mStr(0).Caption = PublicTips(0)  'A-E
+         Case Tag_Item
+           For j = N_Item To mItm.ubound
+             UnLoad mItm(j)
+           Next j
+           
+           For j = mItm.Count To N_Item - 1
+             Load mItm(j)
+             mItm(j).Visible = True
+           Next j
+           
+           For j = 0 To N_Item - 1
+             mItm(j).Caption = strTem(j)
+           Next j
+         Case Tag_Troop
+           For j = N_Troop To mTrp.ubound
+             UnLoad mTrp(j)
+           Next j
+           
+           For j = mTrp.Count To N_Troop - 1
+             Load mTrp(j)
+             mTrp(j).Visible = True
+           Next j
+           
+           For j = 0 To N_Troop - 1
+             mTrp(j).Caption = strTem(j)
+           Next j
+         Case Tag_Faction
+           For j = N_Faction To mFac.ubound
+             UnLoad mFac(j)
+           Next j
+           
+           For j = mFac.Count To N_Faction - 1
+             Load mFac(j)
+             mFac(j).Visible = True
+           Next j
+           
+           For j = 0 To N_Faction - 1
+             mFac(j).Caption = strTem(j)
+           Next j
+         Case Tag_Quest
+           mQst(0).Caption = PublicTips(0)   'A-E
+         Case Tag_Party_Tpl
+           For j = N_PT To mPT.ubound
+             UnLoad mPT(j)
+           Next j
+           
+           For j = mPT.Count To N_PT - 1
+             Load mPT(j)
+             mPT(j).Visible = True
+           Next j
+           
+           For j = 0 To N_PT - 1
+             mPT(j).Caption = strTem(j)
+           Next j
+         Case Tag_Party
+           For j = N_Party To mParty.ubound
+             UnLoad mParty(j)
+           Next j
+           
+           For j = mParty.Count To N_Party - 1
+             Load mParty(j)
+             mParty(j).Visible = True
+           Next j
+           
+           For j = 0 To N_Party - 1
+             mParty(j).Caption = strTem(j)
+           Next j
+         Case Tag_Scene
+           For j = N_Scene To mScene.ubound
+             UnLoad mScene(j)
+           Next j
+           
+           For j = mScene.Count To N_Scene - 1
+             Load mScene(j)
+             mScene(j).Visible = True
+           Next j
+           
+           For j = 0 To N_Scene - 1
+             mScene(j).Caption = strTem(j)
+           Next j
+         Case Tag_Mission_tpl
+           mMT(0).Caption = PublicTips(0)   'A-E
+         Case Tag_Menu
+           mMnu(0).Caption = PublicTips(0)   'A-E
+         Case Tag_Script
+           mScript(0).Caption = PublicTips(0)   'A-E
+         Case Tag_Particle_Sys
+           For j = N_PSys To mPSys.ubound
+             UnLoad mPSys(j)
+           Next j
+           
+           For j = mPSys.Count To N_PSys - 1
+             Load mPSys(j)
+             mPSys(j).Visible = True
+           Next j
+           
+           For j = 0 To N_PSys - 1
+             mPSys(j).Caption = strTem(j)
+           Next j
+         Case Tag_Scene_Prop
+           mSP(0).Caption = PublicTips(0)   'A-E
+         Case Tag_Sound
+           For j = N_Sound To mSnd.ubound
+             UnLoad mSnd(j)
+           Next j
+           
+           For j = mSnd.Count To N_Sound - 1
+             Load mSnd(j)
+             mSnd(j).Visible = True
+           Next j
+           
+           For j = 0 To N_Sound - 1
+             mSnd(j).Caption = strTem(j)
+           Next j
+         Case Tag_Local_Variable
+           mLvar(0).Caption = PublicTips(0)   'A-E
+         Case Tag_Map_Icon
+           For j = N_MapIcon To mMI.ubound
+             UnLoad mMI(j)
+           Next j
+           
+           For j = mMI.Count To N_MapIcon - 1
+             Load mMI(j)
+             mMI(j).Visible = True
+           Next j
+           
+           For j = 0 To N_MapIcon - 1
+             mMI(j).Caption = strTem(j)
+           Next j
+         Case Tag_Skill
+           For j = mSkl.Count To UBound(strTem)
+             Load mSkl(j)
+             mSkl(j).Visible = True
+           Next j
+           
+           For j = 0 To UBound(strTem)
+             mSkl(j).Caption = strTem(j)
+           Next j
+         Case Tag_Mesh
+           mMesh(0).Caption = PublicTips(0)   'A-E
+         Case Tag_Presentation
+           mPrsnt(0).Caption = PublicTips(0)   'A-E
+         Case Tag_Quick_String
+           mQStr(0).Caption = PublicTips(0)   'A-E
+         Case Tag_Track
+           mTrack(0).Caption = PublicTips(0)   'A-E
+         Case Tag_Tableau
+           For j = N_TabMat To mTabMat.ubound
+             UnLoad mTabMat(j)
+           Next j
+           
+           For j = mTabMat.Count To N_TabMat - 1
+             Load mTabMat(j)
+             mTabMat(j).Visible = True
+           Next j
+           
+           For j = 0 To N_TabMat - 1
+             mTabMat(j).Caption = strTem(j)
+           Next j
+         Case Tag_Animation
+           mAni(0).Caption = PublicTips(0)   'A-E
+       End Select
+     
+     End If
+   End If
+Next i
