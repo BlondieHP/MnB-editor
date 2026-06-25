@@ -28,3 +28,4 @@ MSSCCPRJ.SCC
 *.CAB
 Release/
 MnBWarband_Editor(Setup)/
+__pycache__/
