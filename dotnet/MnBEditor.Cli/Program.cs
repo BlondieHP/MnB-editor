@@ -71,6 +71,8 @@ static int ShowStats(string modPath)
     Console.WriteLine($"{"Troops:",-20} {repo.Troops.Count,6}");
     Console.WriteLine($"{"Factions:",-20} {repo.Factions.Count,6}");
     Console.WriteLine($"{"Parties:",-20} {repo.Parties.Count,6}");
+    Console.WriteLine($"{"Party Templates:",-20} {repo.PartyTemplates.Count,6}");
+    Console.WriteLine($"{"Scenes:",-20} {repo.Scenes.Count,6}");
 
     if (repo.Items.Count > 0)
     {
@@ -398,6 +400,15 @@ static DataRepository? LoadMod(string modPath)
 
     var factionFile = Path.Combine(modPath, "factions.txt");
     if (File.Exists(factionFile)) { var p = new FileParser(File.ReadAllBytes(factionFile)); p.GetWord(); p.GetWord(); p.GetWord(); int c = (int)p.GetLong(); for (int i = 0; i < c; i++) { var f = ReadFaction(p, c); f.Id = i; repo.Factions.Add(f); } }
+
+    var ptFile = Path.Combine(modPath, "party_templates.txt");
+    if (File.Exists(ptFile)) { repo.PartyTemplates.AddRange(EntityLoaders.LoadPartyTemplates(ptFile)); }
+
+    var partyFile = Path.Combine(modPath, "parties.txt");
+    if (File.Exists(partyFile)) { repo.Parties.AddRange(EntityLoaders.LoadParties(partyFile)); }
+
+    var sceneFile = Path.Combine(modPath, "scenes.txt");
+    if (File.Exists(sceneFile)) { repo.Scenes.AddRange(EntityLoaders.LoadScenes(sceneFile)); }
 
     return repo;
 }
