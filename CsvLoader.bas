@@ -30,8 +30,12 @@ Public Sub clearCSVName()
 End Sub
 
 '==========================================================================
-' Unified CSV file loader
-' Replaces 8 separate nearly-identical Load*CSVFile functions
+' Unified CSV file loader - O(n) optimized with Dictionary lookup
+'
+' Builds a Dictionary (hash map) of entity ID -> index in O(n) time,
+' then looks up each CSV line in O(1) instead of the original O(n*m)
+' nested loop. For a large mod with 2000 items and 2000 CSV lines,
+' this reduces ~4,000,000 comparisons to ~4,000 operations.
 '==========================================================================
 Private Function LoadCSVFileGeneric(ByVal FileName As String, ByVal EntityType As CSVEntityType) As Boolean
     On Error GoTo errorHandle
@@ -58,12 +62,11 @@ Private Function LoadCSVFileGeneric(ByVal FileName As String, ByVal EntityType A
         Exit Function
     End If
 
-    ' Load and parse CSV file
+    ' Load CSV file
     Dim TemP As String
     Dim arrTmp() As String
     Dim arrFileBuff() As String
     Dim n As Long, i As Long
-    Dim H As Long, F As Boolean
 
     TemP = UEFLoadTextFile(tmpFileName, UEF_UTF8)
     If TemP = vbNullString Then
@@ -72,151 +75,153 @@ Private Function LoadCSVFileGeneric(ByVal FileName As String, ByVal EntityType A
     End If
     arrFileBuff = Split(TemP, vbCrLf)
 
-    ' Entity-specific matching logic
+    ' Build Dictionary: LCase(key) -> index for O(1) lookup
+    Dim dict As Object
+    Set dict = CreateObject("Scripting.Dictionary")
+    dict.CompareMode = 0  ' Binary compare (case-sensitive; we use LCase keys)
+
     Select Case EntityType
         Case CSVET_Party
+            For n = 0 To N_Party - 1
+                dict.Add LCase$(Parties(n).strID), n
+            Next
             For i = 0 To UBound(arrFileBuff)
                 TemP = arrFileBuff(i)
                 If Len(Trim$(TemP)) >= 1 Then
                     arrTmp = Split(TemP, "|")
-                    For n = 0 To N_Party - 1
-                        If LCase$(Parties(n).strID) = LCase$(arrTmp(0)) Then
-                            Parties(n).csvName = arrTmp(1)
-                        End If
-                    Next
+                    If dict.Exists(LCase$(arrTmp(0))) Then
+                        n = dict(LCase$(arrTmp(0)))
+                        Parties(n).csvName = arrTmp(1)
+                    End If
                 End If
             Next
 
         Case CSVET_PartyTemplate
+            For n = 0 To N_PT - 1
+                dict.Add LCase$(PTs(n).ptID), n
+            Next
             For i = 0 To UBound(arrFileBuff)
                 TemP = arrFileBuff(i)
                 If Len(Trim$(TemP)) >= 1 Then
                     arrTmp = Split(TemP, "|")
-                    For n = 0 To N_PT - 1
-                        If LCase$(PTs(n).ptID) = LCase$(arrTmp(0)) Then
-                            PTs(n).csvName = arrTmp(1)
-                        End If
-                    Next
+                    If dict.Exists(LCase$(arrTmp(0))) Then
+                        n = dict(LCase$(arrTmp(0)))
+                        PTs(n).csvName = arrTmp(1)
+                    End If
                 End If
             Next
 
         Case CSVET_Item
+            For n = 0 To N_Item - 1
+                dict.Add LCase$(itm(n).dbName), n
+            Next
             For i = 0 To UBound(arrFileBuff)
                 TemP = arrFileBuff(i)
                 If Len(Trim$(TemP)) >= 1 Then
                     arrTmp = Split(TemP, "|")
-                    For n = 0 To N_Item - 1
-                        If LCase$(itm(n).dbName) = LCase$(arrTmp(0)) Then
-                            itm(n).csvName = arrTmp(1)
+                    ' Handle plural form: "xxx_pl" -> csvName_pl
+                    If Right$(arrTmp(0), 3) = "_pl" Then
+                        Dim baseKey As String
+                        baseKey = LCase$(Left$(arrTmp(0), Len(arrTmp(0)) - 3))
+                        If dict.Exists(baseKey) Then
+                            itm(dict(baseKey)).csvName_pl = arrTmp(1)
                         End If
-                        ' Handle plural form (_pl suffix)
-                        If Right(arrTmp(0), 3) = "_pl" Then
-                            If LCase$(itm(n).dbName) = LCase$(Left(arrTmp(0), Len(arrTmp(0)) - 3)) Then
-                                itm(n).csvName_pl = arrTmp(1)
-                            End If
-                        End If
-                    Next
+                    ElseIf dict.Exists(LCase$(arrTmp(0))) Then
+                        itm(dict(LCase$(arrTmp(0)))).csvName = arrTmp(1)
+                    End If
                 End If
             Next
 
         Case CSVET_Troop
+            For n = 0 To N_Troop - 1
+                dict.Add LCase$(Trps(n).strID), n
+            Next
             For i = 0 To UBound(arrFileBuff)
                 TemP = arrFileBuff(i)
                 If Len(Trim$(TemP)) >= 1 Then
                     arrTmp = Split(TemP, "|")
-                    For n = 0 To N_Troop - 1
-                        If LCase$(Trps(n).strID) = LCase$(arrTmp(0)) Then
-                            Trps(n).csvName = arrTmp(1)
+                    ' Handle plural form: "xxx_pl" -> csvName_pl
+                    If Right$(arrTmp(0), 3) = "_pl" Then
+                        Dim baseKeyTrp As String
+                        baseKeyTrp = LCase$(Left$(arrTmp(0), Len(arrTmp(0)) - 3))
+                        If dict.Exists(baseKeyTrp) Then
+                            Trps(dict(baseKeyTrp)).csvName_pl = arrTmp(1)
                         End If
-                        ' Handle plural form (_pl suffix)
-                        If Right(arrTmp(0), 3) = "_pl" Then
-                            If LCase$(Trps(n).strID) = LCase$(Left(arrTmp(0), Len(arrTmp(0)) - 3)) Then
-                                Trps(n).csvName_pl = arrTmp(1)
-                            End If
-                        End If
-                    Next
+                    ElseIf dict.Exists(LCase$(arrTmp(0))) Then
+                        Trps(dict(LCase$(arrTmp(0)))).csvName = arrTmp(1)
+                    End If
                 End If
             Next
 
         Case CSVET_ItemModifier
-            ' Nested loop: outer over IMod entries, inner over file lines
-            For i = 0 To N_IMod - 1
-                For n = 0 To UBound(arrFileBuff)
-                    TemP = arrFileBuff(n)
-                    If Len(Trim$(TemP)) >= 1 Then
-                        arrTmp = Split(TemP, "|")
-                        If LCase(Trim(IMod(i).ID)) = LCase(Trim(arrTmp(0))) Then
-                            arrTmp(1) = Replace(arrTmp(1), "%s", "")
-                            arrTmp(1) = Trim(arrTmp(1))
-                            IMod(i).csvName = arrTmp(1)
-                            Exit For
-                        End If
-                    End If
-                Next n
-            Next i
-
-        Case CSVET_Faction
+            ' Build reverse dictionary from CSV lines, then match IMod entries
             For i = 0 To UBound(arrFileBuff)
                 TemP = arrFileBuff(i)
                 If Len(Trim$(TemP)) >= 1 Then
                     arrTmp = Split(TemP, "|")
-                    For n = 0 To N_Faction - 1
-                        If LCase$(Factions(n).strID) = LCase$(arrTmp(0)) Then
-                            Factions(n).csvName = arrTmp(1)
-                        End If
-                    Next
+                    ' Store pre-processed value (strip %s, trim)
+                    Dim cleanVal As String
+                    cleanVal = Trim$(Replace(arrTmp(1), "%s", ""))
+                    dict.Add LCase$(Trim$(arrTmp(0))), cleanVal
+                End If
+            Next
+            For i = 0 To N_IMod - 1
+                If dict.Exists(LCase$(Trim$(IMod(i).ID))) Then
+                    IMod(i).csvName = dict(LCase$(Trim$(IMod(i).ID)))
+                End If
+            Next
+
+        Case CSVET_Faction
+            For n = 0 To N_Faction - 1
+                dict.Add LCase$(Factions(n).strID), n
+            Next
+            For i = 0 To UBound(arrFileBuff)
+                TemP = arrFileBuff(i)
+                If Len(Trim$(TemP)) >= 1 Then
+                    arrTmp = Split(TemP, "|")
+                    If dict.Exists(LCase$(arrTmp(0))) Then
+                        Factions(dict(LCase$(arrTmp(0)))).csvName = arrTmp(1)
+                    End If
                 End If
             Next
 
         Case CSVET_QuickString
+            For n = 0 To N_qStr - 1
+                dict.Add LCase$(qStrs(n).Name), n
+            Next
             For i = 0 To UBound(arrFileBuff)
                 TemP = arrFileBuff(i)
                 If Len(Trim$(TemP)) >= 1 Then
                     arrTmp = Split(TemP, "|")
-                    For n = 0 To N_qStr - 1
-                        If LCase$(qStrs(n).Name) = LCase$(arrTmp(0)) Then
-                            qStrs(n).CSV = arrTmp(1)
-                        End If
-                    Next
+                    If dict.Exists(LCase$(arrTmp(0))) Then
+                        qStrs(dict(LCase$(arrTmp(0)))).CSV = arrTmp(1)
+                    End If
                 End If
             Next
 
         Case CSVET_String
-            ' Cursor-optimized: H tracks last matched position to skip already-matched entries
-            H = 0
+            For n = 0 To N_Str - 1
+                dict.Add LCase$(Strs(n).Name), n
+            Next
             For i = 0 To UBound(arrFileBuff)
                 TemP = arrFileBuff(i)
                 If Len(Trim$(TemP)) >= 1 Then
                     arrTmp = Split(TemP, "|")
-                    F = False
-                    For n = H To N_Str - 1
-                        If LCase$(Strs(n).Name) = LCase$(arrTmp(0)) Then
-                            Strs(n).CSV = arrTmp(1)
-                            H = n + 1
-                            F = True
-                            Exit For
-                        End If
-                    Next n
-
-                    ' Fallback: scan from beginning if not found after cursor
-                    If Not F Then
-                        For n = 0 To H - 1
-                            If LCase$(Strs(n).Name) = LCase$(arrTmp(0)) Then
-                                Strs(n).CSV = arrTmp(1)
-                                Exit For
-                            End If
-                        Next n
+                    If dict.Exists(LCase$(arrTmp(0))) Then
+                        Strs(dict(LCase$(arrTmp(0)))).CSV = arrTmp(1)
                     End If
                 End If
             Next
 
     End Select
 
+    Set dict = Nothing
     LoadCSVFileGeneric = True
 
     Exit Function
 
 errorHandle:
+    Set dict = Nothing
     Call logErr("CsvLoader", "LoadCSVFile:[" & FileName & "]", Err.Number, Err.Description)
 End Function
 
