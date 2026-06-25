@@ -43,6 +43,7 @@ UserControl=Controls\MyTab\MyTab.ctl
 Module=ModPython; ModPython.bas
 Form=frmSelectPath.frm
 Form=frmBackUpManager.frm
+Module=ModError; ModError.bas
 Module=ModBackUp; ModBackUp.bas
 Form=frmPSys.frm
 Form=frmSounds.frm
