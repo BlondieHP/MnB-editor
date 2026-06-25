@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MnBEditor.Tests", "MnBEdito
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MnBEditor.Cli", "MnBEditor.Cli\MnBEditor.Cli.csproj", "{72B2798C-31E9-4371-BEF5-24A16ECF845F}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MnBEditor.WinForms", "MnBEditor.WinForms\MnBEditor.WinForms.csproj", "{8AEB4B7F-1007-4C83-85CC-AADC3F1B69AF}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -30,5 +32,9 @@ Global
 		{72B2798C-31E9-4371-BEF5-24A16ECF845F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{72B2798C-31E9-4371-BEF5-24A16ECF845F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{72B2798C-31E9-4371-BEF5-24A16ECF845F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8AEB4B7F-1007-4C83-85CC-AADC3F1B69AF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8AEB4B7F-1007-4C83-85CC-AADC3F1B69AF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8AEB4B7F-1007-4C83-85CC-AADC3F1B69AF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8AEB4B7F-1007-4C83-85CC-AADC3F1B69AF}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
